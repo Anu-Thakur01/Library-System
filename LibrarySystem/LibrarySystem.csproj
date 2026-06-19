@@ -1,0 +1,50 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>915f8e44-2503-4945-b1b4-046e9dace4e1</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Views\Test\**" />
+    <Content Remove="Views\Test\**" />
+    <EmbeddedResource Remove="Views\Test\**" />
+    <None Remove="Views\Test\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Controllers\TestController.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="10.0.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.7">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.7" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.7">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LibrarySystem.Business\LibrarySystem.Business.csproj" />
+    <ProjectReference Include="..\LibrarySystem.Shared\LibrarySystem.Shared.csproj" />
+    <ProjectReference Include="..\LibrarySystem.Repository\LibrarySystem.Repository.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="Views\Author\Index.cshtml" />
+    <AdditionalFiles Include="Views\Member\Add.cshtml" />
+    <AdditionalFiles Include="Views\Member\Edit.cshtml" />
+    <AdditionalFiles Include="Views\Member\Index.cshtml" />
+  </ItemGroup>
+
+</Project>

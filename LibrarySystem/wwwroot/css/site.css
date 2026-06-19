@@ -1,0 +1,110 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
+  color: var(--bs-secondary-color);
+  text-align: end;
+}
+
+.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
+  text-align: start;
+}
+
+
+/*select2 customization*/
+/* Ensure Select2 occupies full width like .form-control */
+.select2-container { width: 100% !important; }
+
+/* Make the single-selection element look like Bootstrap 5 .form-control */
+.select2-container .select2-selection--single {
+  height: calc(1.5em + .75rem + 2px);
+  /* Use right padding similar to Bootstrap's form-select to make room for arrow */
+  padding: .375rem .75rem .375rem  .75rem;
+  padding-right: 2.25rem;
+  border: 1px solid #ced4da;
+  border-radius: .375rem;
+  background-color: #fff;
+  box-shadow: none;
+  box-sizing: border-box;
+}
+
+/* Hide Select2's built-in arrow and use a background SVG caret that can be centered reliably */
+.select2-container .select2-selection__arrow { display: none !important; }
+
+.select2-container .select2-selection--single {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right .75rem center;
+  background-size: 16px 12px;
+}
+
+.select2-container .select2-selection--single .select2-selection__rendered {
+  line-height: 1.5;
+  color: #212529;
+  padding: 0;
+}
+
+/* Open/focus state to match Bootstrap focus styles */
+.select2-container--open .select2-selection--single,
+.select2-container .select2-selection--single:focus {
+  border-color: #86b7fe;
+  box-shadow: 0 0 0 .25rem rgba(13,110,253,.25);
+  outline: none;
+}
+
+/* Position the arrow similarly to native selects and vertically center it */
+.select2-container .select2-selection__arrow {
+  position: absolute;
+  right: .75rem;
+  /* try centering via translate in case child offsets persist */
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  height: 100%;
+  display: flex;
+  align-items: center; /* vertically center the inner <b> element */
+  justify-content: center;
+  pointer-events: none; /* keep same behavior as native arrow */
+  line-height: 1; /* avoid inherited line-height shifting */
+}
+
+/* Reset internal <b> default offsets and ensure the triangle is centered */
+.select2-container .select2-selection__arrow b {
+  margin: 0 !important;
+  position: relative !important;
+  top: 0 !important;
+  transform: none !important;
+  display: block !important;
+  width: 0 !important;
+  height: 0 !important;
+  border-style: solid !important;
+  /* typical Select2 arrow is a small triangle pointing down */
+  border-width: 5px 4px 0 !important;
+  border-color: #212529 transparent transparent !important;
+}
+
+/* Make dropdown appear above other elements when needed */
+.select2-container .select2-dropdown { z-index: 2000; }
+
+.input-validation-error {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.15rem #f40c22;
+}

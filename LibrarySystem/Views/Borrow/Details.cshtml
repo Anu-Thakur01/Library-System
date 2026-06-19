@@ -1,0 +1,94 @@
+@using LibrarySystem.Shared.BorrowData
+@model BorrowDetails
+<h1>Borrow Details</h1>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Borrow Record</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <strong>Book Name:</strong>
+                            <p>@Model.BookName</p>
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Member Name:</strong>
+                            <p>@Model.MemberName</p>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <strong>Borrowed On:</strong>
+                            <p>@Model.BorrowedOn.ToString("yyyy-MM-dd HH:mm:ss")</p>
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Due Date:</strong>
+                            <p>@Model.DueDate.ToString("yyyy-MM-dd HH:mm:ss")</p>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <strong>Is Returned:</strong>
+                            <p>
+                                @{
+                                    if (Model.IsReturned)
+                                    {
+                                        <span class="badge bg-success">Yes</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-warning">No</span>
+                                    }
+                                }
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Is Overdue:</strong>
+                            <p>
+                                @{
+                                    if (Model.IsOverdue)
+                                    {
+                                        <span class="badge bg-danger">Yes</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-success">No</span>
+                                    }
+                                }
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <strong>Days Overdue:</strong>
+                            <p>@Model.DaysOverdue</p>
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Fine Amount:</strong>
+                            <p>@Model.FineAmount Rs.</p>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <strong>Status:</strong>
+                            <p>@Model.Status</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <a asp-controller="Borrow" asp-action="Index" class="btn btn-secondary">Back to List</a>
+                    @if (!Model.IsReturned)
+                    {
+                        <form method="post" asp-controller="Borrow" asp-action="ReturnBook" style="display:inline;">
+                            <input type="hidden" name="id" value="@Model.BorrowId" />
+                            <button type="submit" class="btn btn-success" onclick="return confirm('Mark as returned?')">Return Book</button>
+                        </form>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

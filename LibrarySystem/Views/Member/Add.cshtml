@@ -1,0 +1,80 @@
+﻿@using LibrarySystem.Shared.MemberData
+@model MemberDetails
+<h1>Add Member</h1>
+<div class="container">
+    <form asp-controller="Member" asp-action="Add" method="post">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="MemberName">Member Name<span class="text-danger">*</span></label>
+                    <input type="text" asp-for="MemberName" placeholder="Enter Member Name" class="form-control" />
+                    <span asp-validation-for="MemberName" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Address">Address<span class="text-danger">*</span></label>
+                    <input type="text" asp-for="Address" placeholder="Enter Address" class="form-control" />
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="PhoneNumber">Phone Number<span class="text-danger">*</span></label>
+                    <input type="text" asp-for="PhoneNumber" placeholder="Enter Phone Number" class="form-control" maxlength="10" inputmode="numeric" pattern="[0-9]{10}" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10)" /> 
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Email">Email Address<span class="text-danger">*</span></label>
+                    <input type="email" asp-for="Email" placeholder="Enter Gmail Address" class="form-control" pattern="[A-Za-z0-9._%+\-]+@@[Gg][Mm][Aa][Ii][Ll]\.[Cc][Oo][Mm]" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="JoinedDate">Joined Date<span class="text-danger">*</span></label>
+                    <input type="datetime-local" asp-for="JoinedDate" placeholder="Enter Joined Date" class="form-control" />
+                    <span asp-validation-for="JoinedDate" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="MembershipType">Membership Type<span class="text-danger">*</span></label>
+                        <select asp-for="MembershipType" class="form-control">
+                            <option value="">Select Membership Type</option>
+                            <option value="G">General</option>
+                            <option value="P">Premium</option>
+                        </select>
+                        <span asp-validation-for="MembershipType" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12" style="margin-top:15px;">
+                <div class="form-group">
+                    <input type="submit" value="Submit" class="btn btn-success" />
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $(document).ready(function(){
+            $("select.form-control").select2({ width: '100%' });
+        });
+    </script>
+}

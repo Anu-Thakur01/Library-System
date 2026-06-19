@@ -1,0 +1,148 @@
+@using LibrarySystem.Shared
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>@ViewData["Title"] - LibrarySystem</title>
+    <script type="importmap"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="~/assets/css/template.css" rel="stylesheet">
+    @await RenderSectionAsync("Styles", required: false)
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/LibrarySystem.styles.css" asp-append-version="true"/>
+
+</head>
+<body>
+<div class="sidebar-overlay"></div>
+<div class="app-shell">
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <span class="brand-mark"><i class="bi bi-journal-bookmark"></i></span>
+            <div>
+                <div class="brand-title">Library</div>
+                <div class="brand-subtitle">Management System</div>
+            </div>
+        </div>
+        @await Component.InvokeAsync("SidebarNavigation")
+    </aside>
+
+    <main class="main">
+        @{
+            HeaderDetails headerDetails = new HeaderDetails
+            {
+                HeaderTitle = ViewData["Title"]?.ToString(),
+                SubHeaderTitle = ViewData["SubTitle"]?.ToString()
+            };
+        }
+        <partial name="_HeaderPartial" model="headerDetails"/>
+        <div class="content">
+            @RenderBody()
+        </div>
+    </main>
+
+</div>
+
+
+@* *@
+@* <header> *@
+@*     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3"> *@
+@*         <div class="container-fluid"> *@
+@*             <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">LibrarySystem</a> *@
+@*             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent" *@
+@*                     aria-expanded="false" aria-label="Toggle navigation"> *@
+@*                 <span class="navbar-toggler-icon"></span> *@
+@*             </button> *@
+@*             <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between"> *@
+@*                 <ul class="navbar-nav flex-grow-1"> *@
+@*                     @if (User.Identity != null && User.Identity.IsAuthenticated) *@
+@*                     { *@
+@*                         <li class="nav-item"> *@
+@*                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a> *@
+@*                         </li> *@
+@*                         @if (User.IsInRole("SuperAdmin")) *@
+@*                         { *@
+@*                             <li class="nav-item dropdown"> *@
+@*                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> *@
+@*                                     Setup *@
+@*                                 </a> *@
+@*                                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink"> *@
+@*                                     <a class="dropdown-item" asp-area="" asp-controller="Book" asp-action="Index">Books Management</a> *@
+@*                                     <a class="dropdown-item" asp-area="" asp-controller="Category" asp-action="Index">Category Management</a> *@
+@*                                     <a class="dropdown-item" asp-area="" asp-controller="Publication" asp-action="Index">Publication Management</a> *@
+@*                                     <a class="dropdown-item" asp-area="" asp-controller="Author" asp-action="Index">Author Management</a> *@
+@*                                 </div> *@
+@*                             </li> *@
+@*                             <li class="nav-item"> *@
+@*                                 <a class="nav-link text-dark" asp-area="" asp-controller="Member" asp-action="Index">Members Management</a> *@
+@*                             </li> *@
+@*                             <li class="nav-item"> *@
+@*                                 <a class="nav-link text-dark" asp-area="" asp-controller="UserManagement" asp-action="Index">User Management</a> *@
+@*                             </li> *@
+@*                         } *@
+@* *@
+@*                         @if (User.IsInRole("SuperAdmin") || User.IsInRole("Staff")) *@
+@*                         { *@
+@*                             <li class="nav-item"> *@
+@*                                 <a class="nav-link text-dark" asp-area="" asp-controller="Borrow" asp-action="Index">Borrow Management</a> *@
+@*                             </li> *@
+@*                             <li class="nav-item dropdown"> *@
+@*                                 <a class="nav-link dropdown-toggle" href="#" id="reportsDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> *@
+@*                                     Reports *@
+@*                                 </a> *@
+@*                                 <div class="dropdown-menu" aria-labelledby="reportsDropdownMenuLink"> *@
+@*                                     <a class="dropdown-item" asp-area="" asp-controller="Reports" asp-action="BorrowedBooks">Borrowed Books By Date</a> *@
+@*                                     <a class="dropdown-item" asp-area="" asp-controller="Reports" asp-action="MemberBorrowHistory">Member Borrow History</a> *@
+@*                                 </div> *@
+@*                             </li> *@
+@*                         } *@
+@*                     } *@
+@*                 </ul> *@
+@*                 <ul class="navbar-nav"> *@
+@*                     @if (User.Identity != null && User.Identity.IsAuthenticated) *@
+@*                     { *@
+@*                         <li class="nav-item d-flex align-items-center me-3"> *@
+@*                             <span class="text-muted small"> *@
+@*                                 Logged in as: <strong class="text-dark">@User.Identity.Name</strong> *@
+@*                                 <span class="badge bg-primary-subtle text-primary-emphasis ms-1">@User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.Role)?.Value</span> *@
+@*                             </span> *@
+@*                         </li> *@
+@*                         <li class="nav-item"> *@
+@*                             <form asp-controller="Auth" asp-action="Logout" method="post" class="form-inline"> *@
+@*                                 <button type="submit" class="btn btn-outline-danger btn-sm px-3 rounded-pill fw-semibold">Logout</button> *@
+@*                             </form> *@
+@*                         </li> *@
+@*                     } *@
+@*                     else *@
+@*                     { *@
+@*                         <li class="nav-item"> *@
+@*                             <a class="btn btn-primary btn-sm px-3 rounded-pill fw-semibold" asp-controller="Auth" asp-action="Login">Login</a> *@
+@*                         </li> *@
+@*                     } *@
+@*                 </ul> *@
+@*             </div> *@
+@*         </div> *@
+@*     </nav> *@
+@* </header> *@
+@* <div class="container"> *@
+@*     <main role="main" class="pb-3"> *@
+@*         @RenderBody() *@
+@*     </main> *@
+@* </div> *@
+
+<footer class="border-top footer text-muted">
+    <div class="container">
+        &copy; 2026 - LibrarySystem - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    </div>
+</footer>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/assets/js/template.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<script src="~/js/site.js" asp-append-version="true"></script>
+@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

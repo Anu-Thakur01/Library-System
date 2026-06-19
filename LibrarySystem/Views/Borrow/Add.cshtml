@@ -1,0 +1,109 @@
+﻿@using LibrarySystem.Shared.BorrowData
+@model BorrowDetails
+<h1>Add Borrow Record</h1>
+<div class="container">
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert alert-danger" role="alert">
+            <h4 class="alert-heading">Validation Error!</h4>
+            @foreach (var modelState in ViewData.ModelState.Values)
+            {
+                @foreach (var error in modelState.Errors)
+                {
+                    <div>@error.ErrorMessage</div>
+                }
+            }
+        </div>
+    }
+    <form asp-controller="Borrow" asp-action="Add" method="post">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="BookId">Book<span class="text-danger">*</span></label>
+                    <select asp-for="BookId" asp-items="@Model.BookList" class="form-control">
+                        <option value="">Select Book</option>
+                    </select>
+                    <span asp-validation-for="BookId" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="MemberId">Member<span class="text-danger">*</span></label>
+                    <select asp-for="MemberId" asp-items="@Model.MemberList" class="form-control">
+                        <option value="">Select Member</option>
+                    </select>
+                    <span asp-validation-for="MemberId" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="BorrowedOn">Borrowed On<span class="text-danger">*</span></label>
+                    <input asp-for="BorrowedOn" type="datetime-local" class="form-control" id="borrowedOnInput" />
+                    <span asp-validation-for="BorrowedOn" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="DueDate">Due Date (Auto: 15 days from Borrowed On)<span class="text-danger">*</span></label>
+                    <input asp-for="DueDate" type="datetime-local" class="form-control" id="dueDateInput" readonly />
+                    <span asp-validation-for="DueDate" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        @* <div class="row"> *@
+        @*     <div class="col-md-6"> *@
+        @*         <div class="form-group"> *@
+        @*             <label asp-for="Status">Status</label> *@
+        @*             <select asp-for="Status" class="form-control"> *@
+        @*                 <option value="">Select Status</option> *@
+        @*                 <option value="Active">Active</option> *@
+        @*                 <option value="Inactive">Inactive</option> *@
+        @*             </select> *@
+        @*             <span asp-validation-for="Status" class="text-danger"></span> *@
+        @*         </div> *@
+        @*     </div> *@
+        @* </div> *@
+        <div class="row">
+            <div class="col-md-12" style="margin-top:15px;">
+                <div class="form-group">
+                    <input type="submit" value="Submit" class="btn btn-success" />
+                    <a asp-controller="Borrow" asp-action="Index" class="btn btn-secondary">Cancel</a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $(document).ready(function () {
+            $("select.form-control").select2({width: '100%'});
+            
+            // Calculate due date as 15 days from borrowed on date
+            $('#borrowedOnInput').on('change', function () {
+                const borrowedOn = new Date($(this).val());
+                if (!isNaN(borrowedOn.getTime())) {
+                    const dueDate = new Date(borrowedOn);
+                    dueDate.setDate(dueDate.getDate() + 15);
+                    
+                    // Format to datetime-local format (YYYY-MM-DDTHH:mm)
+                    const year = dueDate.getFullYear();
+                    const month = String(dueDate.getMonth() + 1).padStart(2, '0');
+                    const day = String(dueDate.getDate()).padStart(2, '0');
+                    const hours = String(dueDate.getHours()).padStart(2, '0');
+                    const minutes = String(dueDate.getMinutes()).padStart(2, '0');
+                    
+                    $('#dueDateInput').val(`${year}-${month}-${day}T${hours}:${minutes}`);
+                }
+            });
+            
+            // Trigger change event on page load to set initial due date
+            $('#borrowedOnInput').trigger('change');
+        });
+    </script>
+}

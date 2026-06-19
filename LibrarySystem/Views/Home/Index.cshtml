@@ -1,0 +1,142 @@
+@model LibrarySystem.Dtos.DashboardViewModel
+
+@{
+    ViewData["Title"] = "Dashboard";
+    ViewData["SubTitle"] = "Library overview and daily operations";
+}
+
+<section class="dashboard-hero mb-4">
+    <div>
+        <span class="badge badge-soft-success mb-3">Library Management System</span>
+        <h2>Manage books, members, borrowing, and reports from one clean workspace.</h2>
+        <p>Track available books, active loans, overdue returns, and catalog growth with a quick operational view.</p>
+        <div class="d-flex flex-wrap gap-2 mt-3">
+            <a asp-controller="Book" asp-action="Index" class="btn btn-primary">Manage Books</a>
+            <a asp-controller="Borrow" asp-action="Index" class="btn btn-outline-primary">Borrow Records</a>
+        </div>
+    </div>
+    <div class="dashboard-hero-icon">
+        <i class="bi bi-journal-richtext"></i>
+    </div>
+</section>
+
+<div class="row g-3 mb-4">
+    <div class="col-sm-6 col-xl-3">
+        <div class="stat-card">
+            <span class="stat-icon"><i class="bi bi-book"></i></span>
+            <h3 class="stat-value">@Model.TotalBooks</h3>
+            <p class="stat-label">Total Books</p>
+            <span class="stat-trend up">@Model.ActiveBooks active in catalog</span>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="stat-card accent-cyan">
+            <span class="stat-icon"><i class="bi bi-people"></i></span>
+            <h3 class="stat-value">@Model.TotalMembers</h3>
+            <p class="stat-label">Registered Members</p>
+            <span class="stat-trend up">Reader records maintained</span>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="stat-card accent-amber">
+            <span class="stat-icon"><i class="bi bi-arrow-left-right"></i></span>
+            <h3 class="stat-value">@Model.ActiveBorrows</h3>
+            <p class="stat-label">Active Borrows</p>
+            <span class="stat-trend up">Books currently issued</span>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="stat-card accent-rose">
+            <span class="stat-icon"><i class="bi bi-exclamation-triangle"></i></span>
+            <h3 class="stat-value">@Model.OverdueBorrows</h3>
+            <p class="stat-label">Overdue Returns</p>
+            <span class="stat-trend down">Needs staff follow-up</span>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3">
+    <div class="col-xl-8">
+        <div class="panel h-100">
+            <div class="panel-header d-flex align-items-center justify-content-between">
+                <div>
+                    <h5 class="mb-1 text-heading">Recent Books</h5>
+                    <p class="mb-0 text-muted">Newest catalog entries added by the admin team.</p>
+                </div>
+                <a asp-controller="Book" asp-action="AddBook" class="btn btn-sm btn-primary">Add Book</a>
+            </div>
+            <div class="panel-body">
+                <div class="table-responsive rounded">
+                    <table class="table dashboard-table">
+                        <thead>
+                            <tr>
+                                <th>Book</th>
+                                <th>Author</th>
+                                <th>Publication</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var book in Model.RecentBooks)
+                            {
+                                <tr>
+                                    <td class="fw-semibold text-heading">@book.Name</td>
+                                    <td>@book.Author</td>
+                                    <td>@book.Publication</td>
+                                    <td>
+                                        @if (book.Status == "A")
+                                        {
+                                            <span class="badge bg-success">Available</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-danger">Not Available</span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                            @if (!Model.RecentBooks.Any())
+                            {
+                                <tr>
+                                    <td colspan="4" class="text-muted">No books added yet.</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4">
+        <div class="panel h-100">
+            <div class="panel-header">
+                <h5 class="mb-1 text-heading">Library Snapshot</h5>
+                <p class="mb-0 text-muted">Catalog and operational coverage.</p>
+            </div>
+            <div class="panel-body">
+                <div class="snapshot-list">
+                    <div>
+                        <span><i class="bi bi-person-badge"></i> Authors</span>
+                        <strong>@Model.TotalAuthors</strong>
+                    </div>
+                    <div>
+                        <span><i class="bi bi-tags"></i> Categories</span>
+                        <strong>@Model.Categories</strong>
+                    </div>
+                    <div>
+                        <span><i class="bi bi-journal-bookmark"></i> Publications</span>
+                        <strong>@Model.Publications</strong>
+                    </div>
+                    <div>
+                        <span><i class="bi bi-clock-history"></i> Recent Borrows</span>
+                        <strong>@Model.RecentBorrows.Count</strong>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <h6 class="text-heading">Today Focus</h6>
+                    <p class="text-muted mb-0">Review overdue records, update returned books, and keep catalog status accurate.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

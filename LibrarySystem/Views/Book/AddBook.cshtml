@@ -1,0 +1,168 @@
+@using LibrarySystem.Shared.BookData
+@{
+    ViewData["Title"] = "Books Management";
+    ViewData["SubTitle"] = "Add New Book";
+}
+@model BookDetails
+<h1>Add Book</h1>
+<div class="container">
+    <form asp-controller="Book" asp-action="AddBook" method="post" enctype="multipart/form-data">
+        @* <div class="row">
+            <div class="col-md-12">
+                <div asp-validation-summary="All" class="text-danger"></div>
+            </div>
+        </div> *@
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Name">Book Name<span class="text-danger">*</span></label>
+                    <input type="text" asp-for="Name" placeholder="Enter Book Name" class="form-control"/>
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Author">Author Name<span class="text-danger">*</span></label>
+                    <select asp-for="Author" asp-items="Model.AuthorList" class="form-control">
+                        <option value="">Select Author</option>
+                    </select>
+                    <span asp-validation-for="Author" class="text-danger"></span>
+                </div>
+            </div>
+            
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Publication">Publication<span class="text-danger">*</span></label>
+                    <select asp-for="Publication" asp-items="Model.PublicationList" class="form-control">
+                        <option value="">Select Publication</option>
+                    </select>
+                    <span asp-validation-for="Publication" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Category">Category<span class="text-danger">*</span></label>
+                    <select asp-for="Category" asp-items="Model.CategoryList" class="form-control">
+                        <option value="">Select Category</option>
+                    </select>
+                    <span asp-validation-for="Category" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Isbn">ISBN<span class="text-danger">*</span></label>
+                    <input type="text" asp-for="Isbn" placeholder="Enter ISBN" class="form-control"/>
+                    <span asp-validation-for="Isbn" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="TotalCopies">Total Copies<span class="text-danger">*</span></label>
+                    <input type="number" asp-for="TotalCopies" placeholder="Enter Total Copies" class="form-control"/>
+                    <span asp-validation-for="TotalCopies" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="AvailableCopies">Available Copies<span class="text-danger">*</span></label>
+                    <input type="number" asp-for="AvailableCopies" placeholder="Enter Available Copies" class="form-control"/>
+                    <span asp-validation-for="AvailableCopies" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Edition">Edition<span class="text-danger">*</span></label>
+                    <input type="text" asp-for="Edition" placeholder="Enter Edition" class="form-control"/>
+                    <span asp-validation-for="Edition" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Status">Status</label>
+                    <select asp-for="Status" class="form-control">
+                        <option value="">Select Status</option>
+                        <option value="A">Available</option>
+                        <option value="N">Not Available</option>
+                    </select>
+                    <span asp-validation-for="Status" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="ImageFile">Book Cover Image</label>
+                    <input type="file" asp-for="ImageFile" class="form-control" accept=".jpg,.jpeg,.png" id="imageInput" />
+                    <span asp-validation-for="ImageFile" class="text-danger"></span>
+                </div>
+                <div class="form-group mt-3">
+                    <div id="previewContainer" style="display: none;">
+                        <label class="d-block mb-1">Cover Preview:</label>
+                        <div class="d-flex align-items-center gap-3">
+                            <img id="imagePreview" src="#" alt="Preview" style="max-height: 120px; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06); border: 1px solid #dee2e6;" />
+                            <button type="button" class="btn btn-outline-danger btn-sm" id="btnRemoveImage">Remove</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12" style="margin-top:15px;">
+                <div class="form-group">
+                    <input type="submit" value="Submit" class="btn btn-success"/>
+                </div>
+            </div>
+        </div>
+
+
+    </form>
+</div>
+
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $(document).ready(function () {
+            $("select.form-control").select2({width: '100%'});
+
+            // Image preview logic
+            $("#imageInput").change(function () {
+                const file = this.files[0];
+                if (file) {
+                    let reader = new FileReader();
+                    reader.onload = function (e) {
+                        $("#imagePreview").attr("src", e.target.result);
+                        $("#previewContainer").fadeIn();
+                    }
+                    reader.readAsDataURL(file);
+                } else {
+                    $("#previewContainer").hide();
+                }
+            });
+
+            $("#btnRemoveImage").click(function () {
+                $("#imageInput").val("");
+                $("#previewContainer").fadeOut(function() {
+                    $("#imagePreview").attr("src", "#");
+                });
+            });
+        });
+    </script>
+}

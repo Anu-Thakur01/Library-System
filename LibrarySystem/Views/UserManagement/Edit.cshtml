@@ -1,0 +1,103 @@
+@using LibrarySystem.Shared.UserData
+@using Microsoft.AspNetCore.Mvc.Rendering
+@model UserEditDetails
+
+@{
+    ViewData["Title"] = "Edit User";
+    var roleList = ViewBag.RoleList as List<SelectListItem> ?? new List<SelectListItem>();
+}
+
+<h1>Edit User</h1>
+
+<div class="container">
+    <form asp-controller="UserManagement" asp-action="Edit" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Id" />
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="FullName">Full Name<span class="text-danger">*</span></label>
+                    <input type="text" asp-for="FullName" placeholder="Enter Full Name" class="form-control" />
+                    <span asp-validation-for="FullName" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="UserName">Username<span class="text-danger">*</span></label>
+                    <input type="text" asp-for="UserName" class="form-control" autocomplete="username" readonly />
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Email">Email Address<span class="text-danger">*</span></label>
+                    <input type="email" asp-for="Email" placeholder="Enter Email Address" class="form-control" autocomplete="email" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Role">Role<span class="text-danger">*</span></label>
+                    <select asp-for="Role" asp-items="roleList" class="form-control">
+                        <option value="">Select Role</option>
+                    </select>
+                    <span asp-validation-for="Role" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="NewPassword">New Password</label>
+                    <input type="password" asp-for="NewPassword" placeholder="Enter New Password" class="form-control" autocomplete="new-password" />
+                    <span asp-validation-for="NewPassword" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="ConfirmNewPassword">Confirm New Password</label>
+                    <input type="password" asp-for="ConfirmNewPassword" placeholder="Confirm New Password" class="form-control" autocomplete="new-password" />
+                    <span asp-validation-for="ConfirmNewPassword" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label asp-for="CustomNotes">Custom Notes</label>
+                    <textarea asp-for="CustomNotes" placeholder="Enter Custom Notes" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="CustomNotes" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12" style="margin-top:15px;">
+                <div class="form-group">
+                    <input type="submit" value="Submit" class="btn btn-success" />
+                    <a asp-controller="UserManagement" asp-action="Index" class="btn btn-secondary">Back</a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $(document).ready(function () {
+            $("select.form-control").select2({ width: '100%' });
+        });
+    </script>
+}

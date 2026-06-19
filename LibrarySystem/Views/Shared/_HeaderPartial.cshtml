@@ -1,0 +1,42 @@
+@model LibrarySystem.Shared.HeaderDetails
+<header class="topbar d-flex align-items-center justify-content-between">
+    <div class="d-flex align-items-center gap-2">
+        <button type="button" class="menu-toggle" data-menu-toggle aria-label="Toggle menu">
+            <i class="bi bi-list fs-4"></i>
+        </button>
+        <div>
+            <h1 class="page-title">@Model.HeaderTitle</h1>
+            <p class="page-subtitle mb-0">@Model.SubHeaderTitle</p>
+        </div>
+    </div>
+    <div class="topbar-actions d-flex align-items-center gap-2 gap-md-3">
+        <button type="button" class="theme-toggle" data-theme-toggle aria-label="Toggle theme" title="Toggle light or dark mode">
+            <i class="bi bi-moon-stars" data-theme-icon></i>
+        </button>
+        <div class="dropdown navbar-user">
+            <button type="button" class="navbar-user-toggle dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="https://ui-avatars.com/api/?name=Admin+User&background=696cff&color=fff&bold=true&size=80" alt="" class="navbar-user-photo" width="40" height="40">
+                <span class="navbar-user-info d-none d-md-flex flex-column text-start">
+                            <span class="navbar-user-name">@User.Identity?.Name</span>
+                            <span class="navbar-user-role">@User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.Role)?.Value</span>
+                        </span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end navbar-user-menu shadow-sm">
+                <li class="navbar-user-menu-header">
+                    <img src="https://ui-avatars.com/api/?name=Admin+User&background=696cff&color=fff&bold=true&size=80" alt="" class="navbar-user-photo" width="40" height="40">
+                    <div>
+                        <div class="navbar-user-name">@User.Identity?.Name</div>
+                        <div class="navbar-user-email">@User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.Role)?.Value</div>
+                    </div>
+                </li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+                <form asp-controller="Auth" asp-action="Logout" method="post" class="form-inline">
+                    <button type="submit" class="dropdown-item text-danger">Logout</button>
+                </form>
+            </ul>
+        </div>
+    </div>
+</header>
+

@@ -1,0 +1,95 @@
+﻿@using LibrarySystem.Shared.PublicationData
+@model PublicationDetails
+<h1>Add Publication</h1>
+<div class="container">
+    <form asp-controller="Publication" asp-action="Add" method="post">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="PublicationName">Publication Name<span class="text-danger">*</span></label>
+                    <input type="text" asp-for="PublicationName" placeholder="Enter Publication Name" class="form-control" />
+                    <span asp-validation-for="PublicationName" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="PublicationAddress">Publication Address<span class="text-danger">*</span></label>
+                    <input type="text" asp-for="PublicationAddress" placeholder="Enter Publication Address" class="form-control" />
+                    <span asp-validation-for="PublicationAddress" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="ContactPersonName">Contact Person Name<span class="text-danger">*</span></label>
+                    <input type="text" asp-for="ContactPersonName" placeholder="Enter Contact Person Name" class="form-control" />
+                    <span asp-validation-for="ContactPersonName" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="ContactPhone">Contact Phone<span class="text-danger">*</span></label>
+                    <input type="text" asp-for="ContactPhone" placeholder="Enter Contact Phone" class="form-control" />
+                    <span asp-validation-for="ContactPhone" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="PublicationWebsite">Publication Website</label>
+                    <input type="text" asp-for="PublicationWebsite" placeholder="Enter Publication Website" class="form-control" />
+                    <span asp-validation-for="PublicationWebsite" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="PublicationEmail">Publication Email<span class="text-danger">*</span></label>
+                    <input type="text" asp-for="PublicationEmail" placeholder="Enter Publication Email" class="form-control" />
+                    <span asp-validation-for="PublicationEmail" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Status">Publication Status</label>
+                    <select asp-for="Status" class="form-control">
+                        <option value="">Select Status</option>
+                        <option value="A">Is Active</option>
+                        <option value="N">Not Active</option>
+                    </select>
+                    <span asp-validation-for="Status" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12" style="margin-top:15px;">
+                <div class="form-group">
+                    <input type="submit" value="Submit" class="btn btn-success" />
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $(document).ready(function(){
+            $("select.form-control").select2({ width: '100%' });
+        });
+    </script>
+}

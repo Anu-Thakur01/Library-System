@@ -1,0 +1,89 @@
+@model LibrarySystem.Models.LoginViewModel
+@{
+    Layout = "";
+    ViewData["Title"] = "Login";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>@ViewData["Title"] - LibrarySystem</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="~/assets/css/template.css" rel="stylesheet">
+</head>
+<body>
+
+<main class="login-page">
+    <div class="login-layout">
+        <section class="login-promo">
+            <div class="d-flex align-items-center gap-3 mb-4">
+                <span class="brand-mark"><i class="bi bi-journal-bookmark"></i></span>
+                <div>
+                    <div class="brand-title text-white">Library System</div>
+                    <div class="opacity-75 small">Admin template</div>
+                </div>
+            </div>
+            <h2 class="h3 fw-semibold mb-3">Manage your library with a clean, modern workspace.</h2>
+            <p class="mb-0 opacity-75">Track books, members, borrows, and reports in one Sneat-inspired dashboard layout.</p>
+        </section>
+        <section class="login-card">
+            <h1 class="brand-title mb-1">Welcome!</h1>
+            <p class="text-muted mb-4">Sign in to your account</p>
+            <form asp-action="Login" method="post" class="needs-validation">
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div class="alert alert-danger border-0 rounded-3 shadow-sm py-3 mb-4" role="alert">
+                        <div asp-validation-summary="ModelOnly" class="small text-danger fw-semibold"></div>
+                    </div>
+                }
+                <input type="hidden" asp-for="ReturnUrl"/>
+                <div class="mb-3">
+                    <label class="form-label" asp-for="Username">Username</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                        <input asp-for="Username" class="form-control" placeholder="Please enter your username">
+                    </div>
+                    <span asp-validation-for="Username" class="text-danger small mt-1 d-block"></span>
+                </div>
+                <div class="mb-4">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                        <label class="form-label mb-0" asp-for="Password">Password</label>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                        <input asp-for="Password" type="password" class="form-control" placeholder="············">
+                    </div>
+                    <span asp-validation-for="Password" class="text-danger small mt-1 d-block"></span>
+                </div>
+                <button type="submit" class="btn btn-primary w-100 py-2 btn-login">
+                    Sign In
+                </button>
+            </form>
+            <div class="mt-4 border-top pt-4 text-center">
+                <p class="text-muted small mb-1">Database seeded accounts:</p>
+                <div class="d-flex justify-content-around text-start small">
+                    <div>
+                        <span class="badge bg-secondary-subtle text-secondary-emphasis">Super Admin</span>
+                        <div class="mt-1 font-monospace">admin / adminpassword</div>
+                    </div>
+                    <div>
+                        <span class="badge bg-secondary-subtle text-secondary-emphasis">Staff</span>
+                        <div class="mt-1 font-monospace">staff / staffpassword</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+@{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
+</body>
+</html>

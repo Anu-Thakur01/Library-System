@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="LibrarySystem.Business/LibrarySystem.Business.csproj" Id="457d4b46-7367-4ba6-8d2a-07d13d766141" />
+  <Project Path="LibrarySystem.Repository/LibrarySystem.Repository.csproj" Id="add2af99-8b47-4275-91b3-feb40fdca868" />
+  <Project Path="LibrarySystem.Shared/LibrarySystem.Shared.csproj" Id="ea29e5d0-a74b-452b-a3ed-3b14e653bfd4" />
+  <Project Path="LibrarySystem/LibrarySystem.csproj" />
+  <Project Path="LibrarySystem.API/LibrarySystem.API.csproj" />
+</Solution>

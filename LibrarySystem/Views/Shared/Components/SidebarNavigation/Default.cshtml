@@ -1,0 +1,25 @@
+@model LibrarySystem.Shared.NavigationDetails
+<nav class="nav-section">
+    <p class="nav-section-title">Main</p>
+
+    @if (User.Identity != null && User.Identity.IsAuthenticated)
+    {
+        <a class="side-link active" asp-area="" asp-controller="Home" asp-action="Index"><i class="bi bi-house-door"></i>Dashboard</a>
+        @if (User.IsInRole("SuperAdmin"))
+        {
+            <a class="side-link" asp-area="" asp-controller="Book" asp-action="Index"><i class="bi bi-book"></i>Books Management <span class="badge badge-soft-success">@Model.BookCount</span></a>
+            <a class="side-link" asp-area="" asp-controller="Category" asp-action="Index"><i class="bi bi-tags"></i>Category Management</a>
+            <a class="side-link" asp-area="" asp-controller="Publication" asp-action="Index"><i class="bi bi-journal-bookmark"></i>Publication Management</a>
+            <a class="side-link" asp-area="" asp-controller="Author" asp-action="Index"><i class="bi bi-person-badge"></i>Author Management <span class="badge badge-soft-danger">@Model.AuthorCount</span></a>
+            <a class="side-link" asp-area="" asp-controller="Member" asp-action="Index"><i class="bi bi-people"></i>Members Management</a>
+            <a class="side-link" asp-area="" asp-controller="UserManagement" asp-action="Index"><i class="bi bi-person-check"></i>User Management</a>
+        }
+
+        @if (User.IsInRole("SuperAdmin") || User.IsInRole("Staff"))
+        {
+            <a class="side-link" asp-area="" asp-controller="Borrow" asp-action="Index"><i class="bi bi-calendar"></i>Borrow Management</a>
+            <a class="side-link" asp-area="" asp-controller="Reports" asp-action="BorrowedBooks"><i class="bi bi-card-list"></i>Borrowed Books By Date</a>
+            <a class="side-link" asp-area="" asp-controller="Reports" asp-action="MemberBorrowHistory"><i class="bi bi-person-lines-fill"></i>Member Borrow History</a>
+        }
+    }
+</nav>

@@ -1,0 +1,22 @@
+@{
+    ViewData["Title"] = "Reports";
+}
+
+<h1>Reports</h1>
+
+<div class="row mt-3">
+    <div class="col-md-6">
+        <div class="border rounded p-3 h-100">
+            <h5>Borrowed Books By Date</h5>
+            <p class="text-muted">Search borrowed books within a date range with member and book details.</p>
+            <a asp-controller="Reports" asp-action="BorrowedBooks" class="btn btn-primary">Open Report</a>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="border rounded p-3 h-100">
+            <h5>Member Borrow History</h5>
+            <p class="text-muted">Search a member and view present and historical borrowed books.</p>
+            <a asp-controller="Reports" asp-action="MemberBorrowHistory" class="btn btn-primary">Open Report</a>
+        </div>
+    </div>
+</div>

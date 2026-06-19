@@ -1,0 +1,54 @@
+﻿@model List<Book>
+@{
+    ViewData["Title"] = "Pass Value From Controller";
+}
+<h1>@ViewData["Title"]</h1>
+
+<p>Pass Value From Controller</p>
+
+
+<h1>Usage of passing Class Value To View</h1>
+<table class="table">
+    @{
+        foreach (var book in Model)
+        {
+            <tr>
+                <td>@book.Name</td>
+                <td>@book.Author</td>
+                <td>@book.Category</td>
+                <td>@book.Year</td>
+            </tr>
+        }
+    }
+</table>
+
+<h1>Usage of View Data</h1>
+<table class="table">
+    @{
+        var data = (Book)ViewData["BookDetails"];
+        <tr>
+            <td>@data.Name</td>
+            <td>@data.Author</td>
+            <td>@data.Category</td>
+            <td>@data.Year</td>
+        </tr>
+    }
+</table>
+
+
+<h1>Usage of View Bag</h1>
+<table class="table">
+    @{
+        var dataDetails = ViewBag.BookDetails;
+        <tr>
+            <td>@dataDetails.Name</td>
+            <td>@dataDetails.Author</td>
+            <td>@dataDetails.Category</td>
+            <td>@dataDetails.Year</td>
+        </tr>
+    }
+</table>
+
+<a asp-controller="Home" asp-action="TestView">Test Page</a>
+
+<h3> Hey! @TempData["data"] </h3>

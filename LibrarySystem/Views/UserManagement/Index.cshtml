@@ -1,0 +1,84 @@
+@using LibrarySystem.Shared.UserData
+@model List<UserListDetails>
+
+@section Styles {
+    <style>
+        .table-responsive {
+            margin-top: 20px;
+        }
+    </style>
+    <link rel="stylesheet" href="//cdn.datatables.net/2.3.8/css/dataTables.dataTables.min.css" asp-append-version="true" />
+}
+
+@{
+    ViewData["Title"] = "User Management";
+}
+
+<h1>User Management</h1>
+
+@{
+    string tempDataMessage = TempData["isSuccess"] as string ?? string.Empty;
+    if (!string.IsNullOrEmpty(tempDataMessage))
+    {
+        if (tempDataMessage == "YES")
+        {
+            <div class="alert alert-success">@TempData["Message"]</div>
+        }
+        else
+        {
+            <div class="alert alert-danger">@TempData["Message"]</div>
+        }
+    }
+}
+
+<a asp-controller="UserManagement" asp-action="Add" class="btn btn-primary">Add User</a>
+
+<div class="table-responsive">
+    <table class="table" id="userTable">
+        <thead>
+            <tr>
+                <th>SN</th>
+                <th>Full Name</th>
+                <th>Username</th>
+                <th>Role</th>
+                <th>Notes</th>
+                <th>Operations</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int i = 1;
+                foreach (var user in Model)
+                {
+                    <tr>
+                        <td>@i</td>
+                        <td>@user.FullName</td>
+                        <td>@user.UserName</td>
+                        <td>
+                            @if (string.IsNullOrWhiteSpace(user.Role))
+                            {
+                                <span class="badge bg-secondary">No Role</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-primary">@user.Role</span>
+                            }
+                        </td>
+                        <td>@user.CustomNotes</td>
+                        <td>
+                            <a class="btn btn-primary btn-sm" asp-controller="UserManagement" asp-action="Edit" asp-route-id="@user.Id">Edit</a>
+                        </td>
+                    </tr>
+                    i++;
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.datatables.net/2.3.8/js/dataTables.js" asp-append-version="true"></script>
+    <script>
+        libraryDataTable('#userTable');
+    </script>
+}

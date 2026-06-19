@@ -1,0 +1,59 @@
+﻿@using LibrarySystem.Shared.CategoryData
+@model CategoryDetails
+<h1>Add Category</h1>
+<div class="container">
+    <form asp-controller="Category" asp-action="Add" method="post">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Name">Category Name<span class="text-danger">*</span></label>
+                    <input type="text" asp-for="Name" placeholder="Enter Category Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Status">Category Status</label>
+                    <select asp-for="Status" class="form-control">
+                        <option value="">Select Status</option>
+                        <option value="A">Is Active</option>
+                        <option value="N">Not Active</option>
+                    </select>
+                    <span asp-validation-for="Status" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label asp-for="Description">Category Description<span class="text-danger">*</span></label>
+                    <textarea asp-for="Description" class="form-control"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+      
+        
+        <div class="row">
+            <div class="col-md-12" style="margin-top:15px;">
+                <div class="form-group">
+                    <input type="submit" value="Submit" class="btn btn-success" />
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+    $(document).ready(function(){
+        $("select.form-control").select2({ width: '100%' });
+    });
+</script>
+}

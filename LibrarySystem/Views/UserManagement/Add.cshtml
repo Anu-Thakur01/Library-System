@@ -1,0 +1,180 @@
+@using LibrarySystem.Shared.UserData
+@using Microsoft.AspNetCore.Mvc.Rendering
+@model UserCreateDetails
+
+@{
+    ViewData["Title"] = "Add User";
+    var roleList = ViewBag.RoleList as List<SelectListItem> ?? new List<SelectListItem>();
+}
+
+<h1>Add User</h1>
+
+<div class="container">
+    <form asp-controller="UserManagement" asp-action="Add" method="post" id="userManagementAddForm">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="FullName">Full Name<span class="text-danger">*</span></label>
+                    <input type="text" asp-for="FullName" placeholder="Enter Full Name" class="form-control" />
+                    <span asp-validation-for="FullName" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="UserName">Username<span class="text-danger">*</span></label>
+                    <input type="text" asp-for="UserName" placeholder="Enter Username" class="form-control" autocomplete="username" />
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                    <span id="usernameAvailabilityMessage" class="small d-block mt-1"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Email">Email Address<span class="text-danger">*</span></label>
+                    <input type="email" asp-for="Email" placeholder="Enter Email Address" class="form-control" autocomplete="email" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Role">Role<span class="text-danger">*</span></label>
+                    <select asp-for="Role" asp-items="roleList" class="form-control">
+                        <option value="">Select Role</option>
+                    </select>
+                    <span asp-validation-for="Role" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Password">Password<span class="text-danger">*</span></label>
+                    <input type="password" asp-for="Password" placeholder="Enter Password" class="form-control" autocomplete="new-password" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="ConfirmPassword">Confirm Password<span class="text-danger">*</span></label>
+                    <input type="password" asp-for="ConfirmPassword" placeholder="Confirm Password" class="form-control" autocomplete="new-password" />
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label asp-for="CustomNotes">Custom Notes</label>
+                    <textarea asp-for="CustomNotes" placeholder="Enter Custom Notes" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="CustomNotes" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12" style="margin-top:15px;">
+                <div class="form-group">
+                    <input type="submit" value="Submit" class="btn btn-success" id="addUserSubmit" />
+                    <a asp-controller="UserManagement" asp-action="Index" class="btn btn-secondary">Back</a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $(document).ready(function () {
+            $("select.form-control").select2({ width: '100%' });
+
+            var usernameInput = $("#UserName");
+            var usernameMessage = $("#usernameAvailabilityMessage");
+            var submitButton = $("#addUserSubmit");
+            var checkTimer;
+
+            function setUsernameMessage(message, cssClass) {
+                usernameMessage
+                    .removeClass("text-success text-danger text-muted")
+                    .addClass(cssClass)
+                    .text(message);
+            }
+
+            function checkUsernameAvailability() 
+            {
+                var userName = $.trim(usernameInput.val());
+
+                if (!userName) {
+                    usernameInput.removeClass("is-valid is-invalid");
+                    setUsernameMessage("", "");
+                    return $.Deferred().resolve({ isAvailable: false }).promise();
+                }
+
+                submitButton.prop("disabled", true);
+                usernameInput.removeClass("is-valid is-invalid");
+                setUsernameMessage("Checking username...", "text-muted");
+
+                return $.ajax({
+                    url: '@Url.Action("IsUsernameAvailable", "UserManagement")',
+                    type: 'GET',
+                    data: { userName: userName }
+                }).done(function (response) {
+                    if ($.trim(usernameInput.val()) !== userName) {
+                        return;
+                    }
+
+                    if (response.isAvailable) {
+                        usernameInput.addClass("is-valid").removeClass("is-invalid");
+                        setUsernameMessage("Username is available.", "text-success");
+                    } else {
+                        usernameInput.addClass("is-invalid").removeClass("is-valid");
+                        setUsernameMessage("Username is already taken.", "text-danger");
+                    }
+                }).fail(function () {
+                    usernameInput.addClass("is-invalid").removeClass("is-valid");
+                    setUsernameMessage("Unable to check username availability.", "text-danger");
+                }).always(function () {
+                    submitButton.prop("disabled", false);
+                });
+            }
+
+            usernameInput.on("input", function () {
+                clearTimeout(checkTimer);
+                usernameInput.removeClass("is-valid is-invalid");
+                setUsernameMessage("", "");
+
+                if ($.trim(usernameInput.val())) {
+                    checkTimer = setTimeout(checkUsernameAvailability, 500);
+                }
+            });
+
+            $("#userManagementAddForm").on("submit", function (event) {
+                var form = this;
+
+                if (!$(form).valid()) {
+                    return;
+                }
+
+                event.preventDefault();
+                checkUsernameAvailability().done(function (response) {
+                    if (response.isAvailable) {
+                        form.submit();
+                    } else {
+                        usernameInput.focus();
+                    }
+                });
+            });
+        });
+    </script>
+}

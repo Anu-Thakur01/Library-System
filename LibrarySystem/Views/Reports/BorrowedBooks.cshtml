@@ -1,0 +1,115 @@
+@using LibrarySystem.Shared.ReportData
+@model BorrowedBooksReportSearch
+
+@section Styles {
+    <style>
+        .table-responsive {
+            margin-top: 20px;
+        }
+    </style>
+    <link rel="stylesheet" href="//cdn.datatables.net/2.3.8/css/dataTables.dataTables.min.css" asp-append-version="true" />
+}
+
+@{
+    ViewData["Title"] = "Borrowed Books By Date";
+}
+
+<h1>Borrowed Books By Date</h1>
+
+<form asp-controller="Reports" asp-action="BorrowedBooks" method="post" class="row g-3 align-items-end">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="col-md-4">
+        <label asp-for="FromDate">From Date<span class="text-danger">*</span></label>
+        <input type="date" asp-for="FromDate" class="form-control" />
+        <span asp-validation-for="FromDate" class="text-danger"></span>
+    </div>
+    <div class="col-md-4">
+        <label asp-for="ToDate">To Date<span class="text-danger">*</span></label>
+        <input type="date" asp-for="ToDate" class="form-control" />
+        <span asp-validation-for="ToDate" class="text-danger"></span>
+    </div>
+    <div class="col-md-4">
+        <button type="submit" class="btn btn-primary">Search</button>
+        <a asp-controller="Reports" asp-action="Index" class="btn btn-secondary">Back</a>
+    </div>
+</form>
+
+@if (Model.Results.Any())
+{
+    <div class="table-responsive">
+        <table class="table table-striped" id="borrowedBooksReportTable">
+            <thead>
+                <tr>
+                    <th>SN</th>
+                    <th>Borrowed On</th>
+                    <th>Due Date</th>
+                    <th>Return Status</th>
+                    <th>Fine</th>
+                    <th>Member</th>
+                    <th>Membership</th>
+                    <th>Book</th>
+                    <th>Author</th>
+                    <th>Publication</th>
+                    <th>Category</th>
+                    <th>ISBN</th>
+                    <th>Edition</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int i = 1;
+                    foreach (var item in Model.Results)
+                    {
+                        <tr>
+                            <td>@i</td>
+                            <td>@item.BorrowedOn.ToString("yyyy-MM-dd")</td>
+                            <td>@item.DueDate.ToString("yyyy-MM-dd")</td>
+                            <td>
+                                @if (item.IsReturned)
+                                {
+                                    <span class="badge bg-success">Returned</span>
+                                }
+                                else if (item.IsOverdue)
+                                {
+                                    <span class="badge bg-danger">Overdue (@item.DaysOverdue days)</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-warning">Borrowed</span>
+                                }
+                            </td>
+                            <td>@item.FineAmount</td>
+                            <td>@item.MemberName</td>
+                            <td>@item.MembershipType</td>
+                            <td>@item.BookName</td>
+                            <td>@item.Author</td>
+                            <td>@item.Publication</td>
+                            <td>@item.Category</td>
+                            <td>@item.Isbn</td>
+                            <td>@item.Edition</td>
+                        </tr>
+                        i++;
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else if (Model.FromDate.HasValue && Model.ToDate.HasValue && ViewContext.HttpContext.Request.Method == "POST")
+{
+    <div class="alert alert-info mt-3">No borrowed books found for the selected date range.</div>
+}
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="https://cdn.datatables.net/2.3.8/js/dataTables.js" asp-append-version="true"></script>
+    <script>
+        $(document).ready(function () {
+            $('#borrowedBooksReportTable').DataTable({
+                scrollX: true
+            });
+        });
+    </script>
+}

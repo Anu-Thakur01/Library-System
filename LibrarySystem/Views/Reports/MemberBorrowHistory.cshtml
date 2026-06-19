@@ -1,0 +1,269 @@
+@using LibrarySystem.Shared.ReportData
+@model MemberBorrowHistorySearch
+
+@section Styles {
+    <style>
+        .table-responsive {
+            margin-top: 15px;
+        }
+
+        .member-autocomplete {
+            position: relative;
+        }
+
+        .member-autocomplete-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            z-index: 1050;
+            display: none;
+            max-height: 220px;
+            overflow-y: auto;
+            background: #fff;
+            border: 1px solid #ced4da;
+            border-top: 0;
+            border-radius: 0 0 4px 4px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+        }
+
+        .member-autocomplete-item {
+            width: 100%;
+            padding: 8px 12px;
+            text-align: left;
+            background: #fff;
+            border: 0;
+            border-bottom: 1px solid #f1f1f1;
+        }
+
+        .member-autocomplete-item:hover,
+        .member-autocomplete-item:focus {
+            background: #f8f9fa;
+        }
+    </style>
+    <link rel="stylesheet" href="//cdn.datatables.net/2.3.8/css/dataTables.dataTables.min.css" asp-append-version="true" />
+}
+
+@{
+    ViewData["Title"] = "Member Borrow History";
+}
+
+<h1>Member Borrow History</h1>
+
+<form asp-controller="Reports" asp-action="MemberBorrowHistory" method="post" class="row g-3 align-items-end">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="col-md-8">
+        <label asp-for="MemberName">Member Name<span class="text-danger">*</span></label>
+        <div class="member-autocomplete">
+            <input type="text" asp-for="MemberName" class="form-control" placeholder="Enter member name" autocomplete="off" />
+            <div id="memberNameSuggestions" class="member-autocomplete-menu"></div>
+        </div>
+        <span asp-validation-for="MemberName" class="text-danger"></span>
+    </div>
+    <div class="col-md-4">
+        <button type="submit" class="btn btn-primary">Search</button>
+        <a asp-controller="Reports" asp-action="Index" class="btn btn-secondary">Back</a>
+    </div>
+</form>
+
+@if (Model.Results.Any())
+{
+    foreach (var member in Model.Results)
+    {
+        <div class="border rounded p-3 mt-4">
+            <div class="row">
+                <div class="col-md-4">
+                    <strong>Name:</strong> @member.MemberName
+                </div>
+                <div class="col-md-4">
+                    <strong>Membership:</strong> @member.MembershipType
+                </div>
+                <div class="col-md-4 mt-2">
+                    <strong>Joined:</strong> @member.JoinedDate.ToString("yyyy-MM-dd")
+                </div>
+                <div class="col-md-4 mt-2">
+                    <strong>Expires:</strong> @member.ExpirationDate.ToString("yyyy-MM-dd")
+                </div>
+            </div>
+
+            <h5 class="mt-4">Present Borrowed Books</h5>
+            @if (member.PresentBorrows.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-striped report-table">
+                        <thead>
+                            <tr>
+                                <th>SN</th>
+                                <th>Book</th>
+                                <th>Author</th>
+                                <th>Publication</th>
+                                <th>Category</th>
+                                <th>ISBN</th>
+                                <th>Borrowed On</th>
+                                <th>Due Date</th>
+                                <th>Status</th>
+                                <th>Fine</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int presentIndex = 1;
+                                foreach (var borrow in member.PresentBorrows)
+                                {
+                                    <tr>
+                                        <td>@presentIndex</td>
+                                        <td>@borrow.BookName</td>
+                                        <td>@borrow.Author</td>
+                                        <td>@borrow.Publication</td>
+                                        <td>@borrow.Category</td>
+                                        <td>@borrow.Isbn</td>
+                                        <td>@borrow.BorrowedOn.ToString("yyyy-MM-dd")</td>
+                                        <td>@borrow.DueDate.ToString("yyyy-MM-dd")</td>
+                                        <td>
+                                            @if (borrow.IsOverdue)
+                                            {
+                                                <span class="badge bg-danger">Overdue (@borrow.DaysOverdue days)</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-warning">Borrowed</span>
+                                            }
+                                        </td>
+                                        <td>@borrow.FineAmount</td>
+                                    </tr>
+                                    presentIndex++;
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info">This member has no present borrowed books.</div>
+            }
+
+            <h5 class="mt-4">Borrow History</h5>
+            @if (member.BorrowHistory.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-striped report-table">
+                        <thead>
+                            <tr>
+                                <th>SN</th>
+                                <th>Book</th>
+                                <th>Author</th>
+                                <th>Publication</th>
+                                <th>Category</th>
+                                <th>ISBN</th>
+                                <th>Borrowed On</th>
+                                <th>Due Date</th>
+                                <th>Fine</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int historyIndex = 1;
+                                foreach (var borrow in member.BorrowHistory)
+                                {
+                                    <tr>
+                                        <td>@historyIndex</td>
+                                        <td>@borrow.BookName</td>
+                                        <td>@borrow.Author</td>
+                                        <td>@borrow.Publication</td>
+                                        <td>@borrow.Category</td>
+                                        <td>@borrow.Isbn</td>
+                                        <td>@borrow.BorrowedOn.ToString("yyyy-MM-dd")</td>
+                                        <td>@borrow.DueDate.ToString("yyyy-MM-dd")</td>
+                                        <td>@borrow.FineAmount</td>
+                                    </tr>
+                                    historyIndex++;
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info">This member has no returned book history.</div>
+            }
+        </div>
+    }
+}
+else if (!string.IsNullOrWhiteSpace(Model.MemberName) && ViewContext.HttpContext.Request.Method == "POST")
+{
+    <div class="alert alert-info mt-3">No member found for the entered name.</div>
+}
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="https://cdn.datatables.net/2.3.8/js/dataTables.js" asp-append-version="true"></script>
+    <script>
+        $(document).ready(function () {
+            $('.report-table').DataTable({
+                scrollX: true
+            });
+
+            var memberNameInput = $('#MemberName');
+            var suggestionsMenu = $('#memberNameSuggestions');
+            var searchTimer;
+
+            function hideSuggestions() {
+                suggestionsMenu.hide().empty();
+            }
+
+            function renderSuggestions(suggestions) {
+                suggestionsMenu.empty();
+
+                if (!suggestions || suggestions.length === 0) {
+                    hideSuggestions();
+                    return;
+                }
+
+                $.each(suggestions, function (_, memberName) {
+                    $('<button type="button" class="member-autocomplete-item"></button>')
+                        .text(memberName)
+                        .on('mousedown', function (event) {
+                            event.preventDefault();
+                            memberNameInput.val(memberName);
+                            hideSuggestions();
+                        })
+                        .appendTo(suggestionsMenu);
+                });
+
+                suggestionsMenu.show();
+            }
+
+            memberNameInput.on('input', function () {
+                clearTimeout(searchTimer);
+                var term = $.trim(memberNameInput.val());
+
+                if (term.length < 2) {
+                    hideSuggestions();
+                    return;
+                }
+
+                searchTimer = setTimeout(function () {
+                    $.ajax({
+                        url: '@Url.Action("MemberNameSuggestions", "Reports")',
+                        type: 'GET',
+                        data: { term: term }
+                    }).done(function (suggestions) {
+                        if ($.trim(memberNameInput.val()) === term) {
+                            renderSuggestions(suggestions);
+                        }
+                    }).fail(function () {
+                        hideSuggestions();
+                    });
+                }, 300);
+            });
+
+            memberNameInput.on('blur', function () {
+                setTimeout(hideSuggestions, 150);
+            });
+        });
+    </script>
+}

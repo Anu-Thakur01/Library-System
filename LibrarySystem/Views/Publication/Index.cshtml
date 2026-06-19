@@ -1,0 +1,84 @@
+﻿@using LibrarySystem.Shared.PublicationData
+@model List<PublicationDetails>
+@section Styles {
+    <style>
+        .table-responsive {
+            margin-top: 20px;
+        }
+    </style>
+    <link rel="stylesheet" href="//cdn.datatables.net/2.3.8/css/dataTables.dataTables.min.css" asp-append-version="true" />
+}
+
+<h1>Publication Management</h1>
+
+@{
+    string tempDataMessage = TempData["isSuccess"] as string ?? string.Empty;
+    if(!string.IsNullOrEmpty(tempDataMessage))
+    {
+        if (tempDataMessage == "YES")
+        {
+            <div class="alert alert-success">@TempData["Message"]</div>
+        }
+        else
+        {
+            <div class="alert alert-danger">@TempData["Message"]</div>
+        }
+    }
+}
+
+<a asp-controller="Publication" asp-action="Add" class="btn btn-primary">Add Publication</a>
+
+<div class="table-responsive">
+    <table class="table" id="categoryTable">
+        <thead>
+            <tr>
+                <th>SN</th>
+                <th>Publication Name</th>
+                <th>Contact Person Name</th>
+                <th>Publication Status</th>
+                <th>Operations</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int i = 1;
+                foreach (var publication in Model)
+                {
+                    <tr>
+                        <td>@i</td>
+                        <td>@publication.PublicationName</td>
+                        <td>@publication.ContactPersonName</td>
+                        <td>
+                            @{
+                                if (publication.Status == "A")
+                                {
+                                    <span class="badge bg-success">Available</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">Not Available</span>
+                                }
+                            }
+                        </td>
+                        <td>
+                            <a class="btn btn-primary btn-sm" asp-controller="Publication" asp-action="Edit" asp-route-id="@publication.PublicationId">Edit</a>
+                            <a class="btn btn-warning btn-sm" asp-controller="Publication" asp-action="UpdateStatus" asp-route-id="@publication.PublicationId" onclick="return confirm('Are you sure you want to change the status?')">Change Status</a>
+                            <form asp-controller="Publication" asp-action="Delete" asp-route-id="@publication.PublicationId" method="post" class="d-inline">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this publication?')">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    i++;
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.datatables.net/2.3.8/js/dataTables.js" asp-append-version="true"></script>
+    <script>
+        libraryDataTable('#categoryTable');
+    </script>
+}

@@ -1,0 +1,84 @@
+@{
+    ViewData["Title"] = "Access Denied";
+}
+
+<div class="row justify-content-center align-items-center min-vh-75 py-5">
+    <div class="col-md-6">
+        <div class="card border-0 shadow-lg access-denied-card text-center p-5">
+            <div class="card-body">
+                <div class="icon-container mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="text-danger bi bi-shield-slash" viewBox="0 0 16 16">
+                        <path d="M1.093 3.093c-.496.19-.882.56-1.093 1.093A8.32 8.32 0 0 0 0 8c0 4.418 3.582 8 8 8a8.32 8.32 0 0 0 3.814-1.093l-1.093-1.093A6.29 6.29 0 0 1 8 14c-3.314 0-6-2.686-6-6 0-.806.16-1.574.45-2.274L1.093 3.093z"/>
+                        <path d="M12.907 12.907c.496-.19.882-.56 1.093-1.093A8.32 8.32 0 0 0 16 8c0-4.418-3.582-8-8-8a8.32 8.32 0 0 0-3.814 1.093l1.093 1.093C5.98 1.626 6.953 1.5 8 1.5c3.314 0 6 2.686 6 6 0 .806-.16 1.574-.45 2.274l1.357 1.357z"/>
+                        <path d="M15.121 14.414 1.414 1.707.707 2.414l13.707 13.707z"/>
+                    </svg>
+                </div>
+
+                <h1 class="fw-bold mb-3 text-gradient-danger">Access Denied</h1>
+                <p class="text-muted fs-5 mb-4">
+                    You do not have the required role permissions to access this page. Please log in with an administrator account to view this resource.
+                </p>
+
+                <div class="d-flex justify-content-center gap-3">
+                    <a asp-controller="Home" asp-action="Index" class="btn btn-outline-primary px-4 py-2.5 rounded-3 fw-semibold">
+                        Back to Home
+                    </a>
+                    
+                    <form asp-controller="Auth" asp-action="Logout" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-danger px-4 py-2.5 rounded-3 fw-semibold shadow-sm">
+                            Log Out
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .min-vh-75 {
+        min-height: 75vh;
+    }
+
+    .access-denied-card {
+        border-radius: 20px !important;
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(10px);
+        transition: transform 0.3s ease;
+    }
+
+    .access-denied-card:hover {
+        transform: translateY(-3px);
+    }
+
+    .icon-container {
+        display: inline-block;
+        padding: 20px;
+        background-color: #fee2e2;
+        border-radius: 50%;
+        animation: pulse 2s infinite;
+    }
+
+    .text-gradient-danger {
+        background: linear-gradient(135deg, #ef4444, #b91c1c);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .py-2.5 {
+        padding-top: 0.625rem;
+        padding-bottom: 0.625rem;
+    }
+
+    @@keyframes pulse {
+        0% {
+            box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+        }
+        70% {
+            box-shadow: 0 0 0 15px rgba(239, 68, 68, 0);
+        }
+        100% {
+            box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+        }
+    }
+</style>
