@@ -1,6 +1,9 @@
 ﻿@using LibrarySystem.Shared.PublicationData
 @model PublicationDetails
-<h1>Add Publication</h1>
+<div class="d-flex align-items-center mb-3">
+    <button type="button" class="btn btn-secondary me-2" onclick="goBack('@Url.Action("Index","Home")')">Back</button>
+    <h1 class="mb-0">Add Publication</h1>
+</div>
 <div class="container">
     <form asp-controller="Publication" asp-action="Add" method="post">
         <div class="row">

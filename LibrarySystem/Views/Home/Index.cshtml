@@ -14,6 +14,25 @@
             <a asp-controller="Book" asp-action="Index" class="btn btn-primary">Manage Books</a>
             <a asp-controller="Borrow" asp-action="Index" class="btn btn-outline-primary">Borrow Records</a>
         </div>
+
+<!-- Modal for stat details -->
+<div class="modal fade" id="statDetailModal" tabindex="-1" aria-labelledby="statDetailModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="statDetailModalLabel">Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p id="statDetailDescription"></p>
+      </div>
+      <div class="modal-footer">
+        <a id="statDetailOpenLink" class="btn btn-primary" href="#">Open full list</a>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
     </div>
     <div class="dashboard-hero-icon">
         <i class="bi bi-journal-richtext"></i>
@@ -22,36 +41,44 @@
 
 <div class="row g-3 mb-4">
     <div class="col-sm-6 col-xl-3">
-        <div class="stat-card">
-            <span class="stat-icon"><i class="bi bi-book"></i></span>
-            <h3 class="stat-value">@Model.TotalBooks</h3>
-            <p class="stat-label">Total Books</p>
-            <span class="stat-trend up">@Model.ActiveBooks active in catalog</span>
-        </div>
+        <button type="button" class="stat-link" data-modal="books" data-url="@Url.Action("Index","Book")" data-title="Books" data-desc="View and manage books." title="View books">
+            <div class="stat-card">
+                <span class="stat-icon"><i class="bi bi-book"></i></span>
+                <h3 class="stat-value">@Model.TotalBooks</h3>
+                <p class="stat-label">Total Books</p>
+                <span class="stat-trend up">@Model.ActiveBooks active in catalog</span>
+            </div>
+        </button>
     </div>
     <div class="col-sm-6 col-xl-3">
-        <div class="stat-card accent-cyan">
-            <span class="stat-icon"><i class="bi bi-people"></i></span>
-            <h3 class="stat-value">@Model.TotalMembers</h3>
-            <p class="stat-label">Registered Members</p>
-            <span class="stat-trend up">Reader records maintained</span>
-        </div>
+        <button type="button" class="stat-link" data-modal="members" data-url="@Url.Action("Index","Member")" data-title="Members" data-desc="View and manage registered members." title="View members">
+            <div class="stat-card accent-cyan">
+                <span class="stat-icon"><i class="bi bi-people"></i></span>
+                <h3 class="stat-value">@Model.TotalMembers</h3>
+                <p class="stat-label">Registered Members</p>
+                <span class="stat-trend up">Reader records maintained</span>
+            </div>
+        </button>
     </div>
     <div class="col-sm-6 col-xl-3">
-        <div class="stat-card accent-amber">
-            <span class="stat-icon"><i class="bi bi-arrow-left-right"></i></span>
-            <h3 class="stat-value">@Model.ActiveBorrows</h3>
-            <p class="stat-label">Active Borrows</p>
-            <span class="stat-trend up">Books currently issued</span>
-        </div>
+        <button type="button" class="stat-link" data-modal="active-borrows" data-url="@Url.Action("Index","Borrow")" data-title="Active Borrows" data-desc="View currently issued books." title="View active borrows">
+            <div class="stat-card accent-amber">
+                <span class="stat-icon"><i class="bi bi-arrow-left-right"></i></span>
+                <h3 class="stat-value">@Model.ActiveBorrows</h3>
+                <p class="stat-label">Active Borrows</p>
+                <span class="stat-trend up">Books currently issued</span>
+            </div>
+        </button>
     </div>
     <div class="col-sm-6 col-xl-3">
-        <div class="stat-card accent-rose">
-            <span class="stat-icon"><i class="bi bi-exclamation-triangle"></i></span>
-            <h3 class="stat-value">@Model.OverdueBorrows</h3>
-            <p class="stat-label">Overdue Returns</p>
-            <span class="stat-trend down">Needs staff follow-up</span>
-        </div>
+        <button type="button" class="stat-link" data-modal="overdue" data-url="@Url.Action("Index","Borrow")?filter=overdue" data-title="Overdue Returns" data-desc="Review overdue returns that need staff follow-up." title="View overdue returns">
+            <div class="stat-card accent-rose">
+                <span class="stat-icon"><i class="bi bi-exclamation-triangle"></i></span>
+                <h3 class="stat-value">@Model.OverdueBorrows</h3>
+                <p class="stat-label">Overdue Returns</p>
+                <span class="stat-trend down">Needs staff follow-up</span>
+            </div>
+        </button>
     </div>
 </div>
 

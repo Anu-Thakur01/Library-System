@@ -9,7 +9,10 @@
     <link rel="stylesheet" href="//cdn.datatables.net/2.3.8/css/dataTables.dataTables.min.css" asp-append-version="true" />
 }
 
-<h1>Borrow Management</h1>
+<div class="d-flex align-items-center mb-3">
+    <button type="button" class="btn btn-secondary me-2" onclick="goBack('@Url.Action("Index","Home")')">Back</button>
+    <h1 class="mb-0">Borrow Management</h1>
+</div>
 
 @{
     string tempDataMessage = TempData["isSuccess"] as string ?? string.Empty;

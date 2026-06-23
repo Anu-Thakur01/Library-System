@@ -383,6 +383,29 @@ a {
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+/* Clickable stat cards (dashboard) */
+.stat-link { display: block; color: inherit; text-decoration: none; }
+.stat-link:focus { outline: 0; }
+.stat-link .stat-card { height: 100%; }
+.stat-link .stat-card:hover { transform: translateY(-3px); box-shadow: 0 0.6rem 1.25rem rgba(38,53,72,0.16); }
+.stat-link:focus .stat-card { box-shadow: 0 0 0 3px rgba(52,84,209,0.12); }
+.stat-link .stat-card { cursor: pointer; }
+
+/* Smooth transitions for theme and layout changes */
+body, .main, .sidebar, .stat-card, .panel, .hero-panel {
+    transition: background-color 220ms ease, color 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
+}
+
+/* Slightly stronger focus for keyboard users */
+.stat-link:focus-visible .stat-card {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(52,84,209,0.14);
+}
+
+/* Ensure modal content has readable contrast in dark mode */
+.modal-content { background-clip: padding-box; }
+.theme-dark .modal-content { background: var(--surface); color: var(--text); border-color: rgba(255,255,255,0.04); }
+
 .stat-card::after {
     position: absolute;
     right: -24px;
@@ -1133,14 +1156,15 @@ a {
    Applied when document.documentElement[data-bs-theme="dark"] is set
    or when body.theme-dark class is present (template.js toggles both). */
 :root[data-bs-theme="dark"], .theme-dark {
-    --surface: #0b1220;
-    --surface-soft: #07101a;
-    --line: rgba(255, 255, 255, 0.06);
-    --text: #b6c0cc;
-    --heading: #e6eef8;
-    --muted: #94a3b8;
-    --brand-soft: rgba(52, 84, 209, 0.07);
-    --shadow-soft: 0 0.5rem 1.5rem rgba(2, 6, 23, 0.6);
+    /* Lighter dark palette for improved readability */
+    --surface: #0f1b26;         /* slightly lighter card surface */
+    --surface-soft: #0b2230;    /* page background, softer than pure black */
+    --line: rgba(255, 255, 255, 0.07);
+    --text: #d3dbe6;            /* brighter body text for contrast */
+    --heading: #ffffff;         /* headings fully readable */
+    --muted: #9fb0c4;           /* lightened muted text */
+    --brand-soft: rgba(52, 84, 209, 0.10);
+    --shadow-soft: 0 0.5rem 1.2rem rgba(2, 6, 23, 0.45);
 }
 
 body.theme-dark {
@@ -1150,15 +1174,15 @@ body.theme-dark {
 
 /* Major containers */
 .theme-dark .sidebar {
-    background: #071122;
+    background: #0c2028; /* slightly lighter so items are distinguishable */
     color: var(--text);
     box-shadow: none;
 }
 
 .theme-dark .topbar {
-    background: rgba(255,255,255,0.03);
+    background: rgba(255,255,255,0.04);
     backdrop-filter: blur(6px);
-    border: 1px solid rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.06);
     box-shadow: none;
     color: var(--text);
 }
@@ -1167,10 +1191,10 @@ body.theme-dark {
 .theme-dark .hero-panel,
 .theme-dark .welcome-card,
 .theme-dark .dashboard-hero {
-    background: linear-gradient(135deg, #071122, #081b2b);
+    background: linear-gradient(135deg, #0b2834, #0f2a3a); /* softer gradient */
     color: var(--heading);
-    box-shadow: 0 0.125rem 0.375rem rgba(0,0,0,0.6);
-    border: 1px solid rgba(255,255,255,0.03);
+    box-shadow: 0 0.125rem 0.375rem rgba(0,0,0,0.35);
+    border: 1px solid rgba(255,255,255,0.04);
 }
 
 .theme-dark .hero-panel::after,
@@ -1183,9 +1207,9 @@ body.theme-dark {
 .theme-dark .stat-card,
 .theme-dark .panel,
 .theme-dark .module-card {
-    background: #0b1220;
-    box-shadow: 0 0.125rem 0.375rem rgba(0,0,0,0.6);
-    border: 1px solid rgba(255,255,255,0.03);
+    background: var(--surface);
+    box-shadow: 0 0.125rem 0.375rem rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.035);
 }
 
 .theme-dark .stat-card::after {
@@ -1194,35 +1218,35 @@ body.theme-dark {
 
 /* Tables and lists */
 .theme-dark .table thead th {
-    color: #9aa6b6;
+    color: #c5d2df;
     background: transparent;
-    border-bottom-color: rgba(255,255,255,0.04);
+    border-bottom-color: rgba(255,255,255,0.06);
 }
 
 .theme-dark .snapshot-list > div {
-    background: transparent;
-    border: 1px solid rgba(255,255,255,0.03);
+    background: rgba(255,255,255,0.015);
+    border: 1px solid rgba(255,255,255,0.035);
 }
 
 .theme-dark .table tbody tr:hover {
-    background: rgba(52,84,209,0.04);
+    background: rgba(52,84,209,0.06);
 }
 
 /* Inputs, search and selects */
 .theme-dark .dt-container .dt-length select,
 .theme-dark .dt-container .dt-search input,
 .theme-dark .command-search {
-    background: rgba(255,255,255,0.03);
+    background: rgba(255,255,255,0.035);
     color: var(--text);
-    border: 1px solid rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.06);
     box-shadow: none;
 }
 
 /* Badges, avatars and small elements */
 .theme-dark .badge-welcome,
 .theme-dark .user-pill {
-    color: #e6eef8;
-    background: rgba(52,84,209,0.06);
+    color: #eef6ff;
+    background: rgba(52,84,209,0.08);
 }
 
 .theme-dark .brand-mark {

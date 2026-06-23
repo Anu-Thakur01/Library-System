@@ -5,7 +5,10 @@
     ViewData["SubTitle"] = "Book Edit";
 }
 @model BookDetails
-<h1>Edit Book</h1>
+<div class="d-flex align-items-center mb-3">
+    <button type="button" class="btn btn-secondary me-2" onclick="goBack('@Url.Action("Index","Home")')">Back</button>
+    <h1 class="mb-0">Edit Book</h1>
+</div>
 <form asp-controller="Book" asp-action="EditBook" method="post" enctype="multipart/form-data">
     <div asp-validation-summary="All" class="text-danger"></div>
     <div class="row">

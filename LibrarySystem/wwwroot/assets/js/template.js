@@ -90,4 +90,28 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     });
+
+    // Stat card modal behavior
+    var statModalEl = document.getElementById('statDetailModal');
+    var statModal = statModalEl ? new bootstrap.Modal(statModalEl) : null;
+    var statDetailTitle = document.getElementById('statDetailModalLabel');
+    var statDetailDesc = document.getElementById('statDetailDescription');
+    var statDetailLink = document.getElementById('statDetailOpenLink');
+
+    document.querySelectorAll('.stat-link').forEach(function (el) {
+        el.addEventListener('click', function (e) {
+            // If element has data-modal, show modal. Otherwise let it behave like a link.
+            var modalKey = el.getAttribute('data-modal');
+            var url = el.getAttribute('data-url') || '#';
+            var title = el.getAttribute('data-title') || 'Details';
+            var desc = el.getAttribute('data-desc') || '';
+            if (modalKey && statModal) {
+                e.preventDefault();
+                if (statDetailTitle) statDetailTitle.textContent = title;
+                if (statDetailDesc) statDetailDesc.textContent = desc;
+                if (statDetailLink) statDetailLink.setAttribute('href', url);
+                statModal.show();
+            }
+        });
+    });
 });

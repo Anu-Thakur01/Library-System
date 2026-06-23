@@ -23,3 +23,23 @@ window.libraryDataTable = function (selector) {
         }
     });
 };
+
+// Navigate back with graceful fallback to the dashboard
+window.goBack = function (fallbackUrl) {
+    try {
+        if (window.history && window.history.length > 1) {
+            window.history.back();
+            return;
+        }
+    }
+    catch (e) {
+        // ignore and fallback
+    }
+
+    if (fallbackUrl) {
+        window.location.href = fallbackUrl;
+    }
+    else {
+        window.location.href = '/';
+    }
+};
