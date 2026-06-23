@@ -92,19 +92,10 @@ builder.Services.AddScoped<IReportBusiness, ReportBusiness>();
 builder.Services.AddScoped<IReportRepository, ReportRepository>();
 
 // Configure Dynamic Database Provider (SQLite or PostgreSQL)
-var provider = builder.Configuration.GetValue<string>("DatabaseProvider") ?? "Sqlite";
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-    if (provider.Equals("PostgreSQL", StringComparison.OrdinalIgnoreCase))
-    {
-        var pgConn = builder.Configuration.GetConnectionString("PostgresConnection");
-        options.UseNpgsql(pgConn);
-    }
-    else
-    {
-        var sqliteConn = builder.Configuration.GetConnectionString("DefaultConnection");
-        options.UseSqlite(sqliteConn);
-    }
+    var connectionString = builder.Configuration.GetConnectionString("PostgresConnection");
+    options.UseNpgsql(connectionString);
 });
 
 // Configure Identity with same options as MVC Web project

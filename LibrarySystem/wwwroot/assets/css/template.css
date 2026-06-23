@@ -1128,3 +1128,114 @@ a {
         flex-wrap: wrap;
     }
 }
+
+/* Dark theme variable overrides and selector fixes
+   Applied when document.documentElement[data-bs-theme="dark"] is set
+   or when body.theme-dark class is present (template.js toggles both). */
+:root[data-bs-theme="dark"], .theme-dark {
+    --surface: #0b1220;
+    --surface-soft: #07101a;
+    --line: rgba(255, 255, 255, 0.06);
+    --text: #b6c0cc;
+    --heading: #e6eef8;
+    --muted: #94a3b8;
+    --brand-soft: rgba(52, 84, 209, 0.07);
+    --shadow-soft: 0 0.5rem 1.5rem rgba(2, 6, 23, 0.6);
+}
+
+body.theme-dark {
+    background: var(--surface-soft);
+    color: var(--text);
+}
+
+/* Major containers */
+.theme-dark .sidebar {
+    background: #071122;
+    color: var(--text);
+    box-shadow: none;
+}
+
+.theme-dark .topbar {
+    background: rgba(255,255,255,0.03);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255,255,255,0.04);
+    box-shadow: none;
+    color: var(--text);
+}
+
+/* Hero / welcome */
+.theme-dark .hero-panel,
+.theme-dark .welcome-card,
+.theme-dark .dashboard-hero {
+    background: linear-gradient(135deg, #071122, #081b2b);
+    color: var(--heading);
+    box-shadow: 0 0.125rem 0.375rem rgba(0,0,0,0.6);
+    border: 1px solid rgba(255,255,255,0.03);
+}
+
+.theme-dark .hero-panel::after,
+.theme-dark .welcome-card::after {
+    color: rgba(158,165,255,0.18);
+    background: rgba(52,84,209,0.06);
+}
+
+/* Cards, panels and modules */
+.theme-dark .stat-card,
+.theme-dark .panel,
+.theme-dark .module-card {
+    background: #0b1220;
+    box-shadow: 0 0.125rem 0.375rem rgba(0,0,0,0.6);
+    border: 1px solid rgba(255,255,255,0.03);
+}
+
+.theme-dark .stat-card::after {
+    background: rgba(105,108,255,0.04);
+}
+
+/* Tables and lists */
+.theme-dark .table thead th {
+    color: #9aa6b6;
+    background: transparent;
+    border-bottom-color: rgba(255,255,255,0.04);
+}
+
+.theme-dark .snapshot-list > div {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.03);
+}
+
+.theme-dark .table tbody tr:hover {
+    background: rgba(52,84,209,0.04);
+}
+
+/* Inputs, search and selects */
+.theme-dark .dt-container .dt-length select,
+.theme-dark .dt-container .dt-search input,
+.theme-dark .command-search {
+    background: rgba(255,255,255,0.03);
+    color: var(--text);
+    border: 1px solid rgba(255,255,255,0.04);
+    box-shadow: none;
+}
+
+/* Badges, avatars and small elements */
+.theme-dark .badge-welcome,
+.theme-dark .user-pill {
+    color: #e6eef8;
+    background: rgba(52,84,209,0.06);
+}
+
+.theme-dark .brand-mark {
+    box-shadow: none;
+    background: linear-gradient(135deg, var(--brand), var(--cyan));
+}
+
+.theme-dark .navbar-user-toggle {
+    color: var(--text);
+    background: transparent;
+}
+
+/* Buttons */
+.theme-dark .btn { box-shadow: none; }
+.theme-dark .btn-primary { box-shadow: 0 0.25rem 0.75rem rgba(52,84,209,0.18); }
+
